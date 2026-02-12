@@ -31,14 +31,17 @@ add_library (loader STATIC src/loader/loader.cpp)
 target_include_directories(loader PRIVATE src/loader)
 target_link_libraries(loader PRIVATE glad)
 
+add_library(camera STATIC src/camera/camera.cpp)
+target_include_directories(camera PRIVATE src/camera)
+
 # Main executable 
 add_executable(main src/main.cpp)
 target_link_libraries(main 
-  PUBLIC
+  PRIVATE 
+  loader
+  camera
   glfw 
   glad
 
-  PRIVATE 
-  loader
 )
 target_compile_definitions(main PRIVATE SHADERS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/shaders") # expose to executables to load shaders at runtime
