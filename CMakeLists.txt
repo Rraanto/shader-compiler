@@ -34,6 +34,13 @@ target_link_libraries(loader PRIVATE glad)
 add_library(camera STATIC src/camera/camera.cpp)
 target_include_directories(camera PRIVATE src/camera)
 
+add_library(compiler STATIC
+  src/compiler/compiler/compiler.cpp
+  src/compiler/preprocessor/preprocessor.cpp
+  src/compiler/shader_source/shader_source.cpp
+)
+target_include_directories(compiler PRIVATE src/compiler)
+
 # Main executable 
 add_executable(main src/main.cpp)
 target_link_libraries(main 
