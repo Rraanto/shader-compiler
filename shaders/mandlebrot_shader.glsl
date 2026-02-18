@@ -39,7 +39,7 @@ void main() {
 
   // pour afficher temporellement 
   // int MAX_ITERS = min(int(iTime) * 100, 1000); 
-  int MAX_ITERS = 1000;
+  int MAX_ITERS = 100;
 
   // computing mandlebrot "color"
   float x = (vPos.x +uCenter.x) * uScale * uAspect; 

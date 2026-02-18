@@ -11,7 +11,7 @@ In `main.cpp` a single rectangle filling the whole viewport constructed from thr
 - `float _zoom_factor`: A float defining how "zoomed-in" the scene is. In practice, it makes the `_scale` value when zooming in or out, mimimum and maximum values for `_zoom_factor` are `_min_zoom_factor`, `_max_zoom_factor`
 
 # Shader compilation pipeline 
-Normally, defining shaders single self-contained source files and compiling them once with `openGL` would be enough, but it does not allow for separating sources in different files, defining shader "libraries" to be reused later, ... so there is a preprocessor that handles `#includes` and enforces some rules, so a preprocessing step is included: 
+Normally, using self-contained standalone shader sources and compiling them once with `openGL` would be enough, but it does not allow for separating sources in different files, defining shader "libraries" to be reused later, ... so there is a preprocessor that handles `#includes` and enforces some rules, so a preprocessing step is included: 
 - source `main.glsl` is loaded, eventually including other files: `#include "libary1.glsl"; #include "libary2.glsl;`
-- the source is processed into a `main_final.glsl` including all the libraries 
-- the processed `main_final.glsl` is sent to the `openGL` compiler. 
+- the source is processed into a `main_processed.glsl` including all the libraries 
+- the processed `main_processed.glsl` is sent to the `openGL` compiler. 

@@ -6,6 +6,10 @@
 #include <iostream>
 #include <string>
 
+// compiler and preprocessor
+#include "compiler/preprocessor/preprocessor.h"
+#include "compiler/compiler/compiler.h"
+
 #include "loader/loader.h"
 #include "camera/camera.h"
 
@@ -61,41 +65,37 @@ int main() {
   /*
    * Loading and compiling shaders
    */
-  std::string v_shader_path =
-      (std::filesystem::path(SHADERS_DIR) / "vertex_shader.glsl").string();
-  std::string f_shader_path =
-      (std::filesystem::path(SHADERS_DIR) / "fragment_shader.glsl").string();
-  std::string v_source = load_shader_source_from_file(v_shader_path);
-  std::string f_source = load_shader_source_from_file(f_shader_path);
+  Compiler compiler;
 
-  if (v_source.empty() || f_source.empty()) {
-    std::cerr << "Shader source is empty."
-              << " vertex_size=" << v_source.size()
-              << " fragment_size=" << f_source.size() << "\n";
+  std::filesystem::path v_shader_path =
+      std::filesystem::path(SHADERS_DIR) / "vertex_shader.glsl";
+  std::filesystem::path f_shader_path =
+      std::filesystem::path(SHADERS_DIR) / "fragment_shader.glsl";
+
+  // vertex shader
+  Compiler::CompileOutput compile_output;
+
+  compile_output = compiler.compile(v_shader_path, GL_VERTEX_SHADER);
+
+  if (!compile_output.success) {
+    std::cerr << compile_output.error << std::endl;
     glfwDestroyWindow(window);
     glfwTerminate();
     return EXIT_FAILURE;
   }
 
-  const char *v_shader_source = v_source.c_str();
-  const char *f_shader_source = f_source.c_str();
+  GLuint vertex_shader = compile_output.shader;
 
-  GLuint vertex_shader =
-      compile_shader(GL_VERTEX_SHADER, v_shader_source, "VERTEX");
-  if (vertex_shader == 0) {
+  // fragment shader
+  compile_output = compiler.compile(f_shader_path, GL_FRAGMENT_SHADER);
+  if (!compile_output.success) {
+    std::cerr << compile_output.error << std::endl;
     glfwDestroyWindow(window);
     glfwTerminate();
     return EXIT_FAILURE;
   }
 
-  GLuint fragment_shader =
-      compile_shader(GL_FRAGMENT_SHADER, f_shader_source, "FRAGMENT");
-  if (fragment_shader == 0) {
-    glDeleteShader(vertex_shader);
-    glfwDestroyWindow(window);
-    glfwTerminate();
-    return EXIT_FAILURE;
-  }
+  GLuint fragment_shader = compile_output.shader;
 
   GLuint shader_program = glCreateProgram();
   glAttachShader(shader_program, vertex_shader);

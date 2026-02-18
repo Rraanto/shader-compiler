@@ -5,23 +5,40 @@
 #ifndef COMPILER_H
 #define COMPILER_H
 
-#include <GL/gl.h>
 #include <filesystem>
 #include <vector>
+#include <string>
+#include <glad/glad.h>
+
 #include "preprocessor/preprocessor.h"
 
-typedef enum CompileResult { SUCCESS, ERROR } CompileResult;
-
 struct Compiler {
+private:
   Preprocessor _preprocessor; // a preprocessor attached
 
-  Compiler(const std::vector<std::filesystem::path> &include_dirs)
-      : _preprocessor(Preprocessor(include_dirs)) {}
+public:
+  struct CompileOutput {
+    bool success;
+    GLuint shader = 0; // the output shader if success
+    std::string error;
+  };
+
+  // explicit avoids implicit cast to other types
+  explicit Compiler() : _preprocessor() {}
+
+  explicit Compiler(const std::vector<std::filesystem::path> &include_dirs)
+      : _preprocessor(include_dirs) {}
 
   /*
    * Compiles the shader source to the openGL unsigned int out
+   *
+   * shader_type must be a valid OpenGL shader type
+   *
+   * in the use cases of this project: only two are used :
+   * GL_FRAGMENT_SHADER, GL_VERTEX_SHADER
    */
-  CompileResult compile(const ShaderSource &source, const GLuint &out);
+  CompileOutput compile(const std::filesystem::path &source_file,
+                        GLenum shader_type);
 };
 
 #endif

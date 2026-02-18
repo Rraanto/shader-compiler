@@ -1,28 +1,16 @@
-/*
- * helper library to load shaders
- * and compile them
- */
-
 #ifndef LOADER_H
 #define LOADER_H
 
-#include <glad/glad.h>
-#include <iostream>
+#include <filesystem>
 #include <string>
 
-/* loads shader source from file
- *
- * purely input-output: no validity checks are made
- */
-std::string load_shader_source_from_file(const std::string &filename);
-
 /*
- * Compiles shader into GLuint
+ * Loads source from a file
  *
- * @parameter type: the type of the shader
- * char* source: the source
- * char* label: developper-set label to call the shader that is being compiled
+ * pure input operation: no content processing is done here
+ *
+ * Returns an empty string if file is not valid
  */
-GLuint compile_shader(GLenum type, const char *source, const char *label);
+std::string load_shader_source_from_file(const std::filesystem::path &filepath);
 
 #endif

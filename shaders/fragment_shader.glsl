@@ -42,8 +42,10 @@ void main() {
   float t = (1.0 + sin(uTime)) / 2.0; 
   // position = retract_inverse(position, 1.0, t);
   // position = comp_exp(position);
+  
+  int max_iters = 1000;
 
-  FragColor = vec4(convergence_track(position, 1000), 1.0);
+  FragColor = vec4(convergence_track(position, max_iters), 1.0);
 
   /* To show a grid instead 
   if ( abs(fract(length(position))) / 2.0 <= THICKNESS * uScale) {
