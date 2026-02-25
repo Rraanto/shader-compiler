@@ -87,7 +87,7 @@ int main() {
   GLuint vertex_shader = compile_output.shader;
 
   // fragment shader
-  compile_output = compiler.compile(f_shader_path, GL_FRAGMENT_SHADER);
+  compile_output = compiler.compile(f_shader_path, GL_FRAGMENT_SHADER, true);
   if (!compile_output.success) {
     std::cerr << compile_output.error << std::endl;
     glfwDestroyWindow(window);

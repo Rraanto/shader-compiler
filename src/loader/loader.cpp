@@ -4,8 +4,7 @@
 #include <fstream>
 #include <sstream>
 
-std::string
-load_shader_source_from_file(const std::filesystem::path &filepath) {
+std::string load_file_content(const std::filesystem::path &filepath) {
 
   // using the construction
   std::ifstream file(filepath);

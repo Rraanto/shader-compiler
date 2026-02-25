@@ -36,7 +36,8 @@ struct Preprocessor {
    * error = "invalid path"
    * }
    */
-  Output process_source(const std::filesystem::path &file_path);
+  Output process_source(const std::filesystem::path &file_path,
+                        bool verbose = false);
 
 private:
   std::vector<std::filesystem::path>
@@ -46,8 +47,10 @@ private:
       _include_files_cache; // cache for included files
 
   std::vector<std::filesystem::path>
-      _current_expansion_stack; // temporary storage of
-                                // currently expanding includes
+      _expansion_stack; // stack to detect for included files
+
+  // checks if file is in stack
+  bool _is_file_in_stack(const std::filesystem::path &file);
 
   /*
    * generates the path to the file corresponding to an include of shape
@@ -59,7 +62,7 @@ private:
    * example:
    * #include "complex.glsl" has include_string "complex.glsl"
    *
-   * returns an optional string with a value if and only if
+   * returns an optional filepath with a value if and only if
    * the include_string corresponded to a correct path
    */
   std::optional<std::filesystem::path>
@@ -79,7 +82,7 @@ private:
    * error = "invalid path"
    * }
    */
-  Output _expand(const std::filesystem::path &file_path);
+  Output _expand(const std::filesystem::path &file_path, bool verbose = false);
 };
 
 #endif

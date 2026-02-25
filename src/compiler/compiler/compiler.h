@@ -38,7 +38,7 @@ public:
    * GL_FRAGMENT_SHADER, GL_VERTEX_SHADER
    */
   CompileOutput compile(const std::filesystem::path &source_file,
-                        GLenum shader_type);
+                        GLenum shader_type, bool verbose = false);
 };
 
 #endif

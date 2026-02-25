@@ -3,20 +3,27 @@
 
 #include <filesystem>
 #include <glad/glad.h>
-#include <stdexcept>
+#include <iostream>
 
 Compiler::CompileOutput
-Compiler::compile(const std::filesystem::path &source_file,
-                  GLenum shader_type) {
+Compiler::compile(const std::filesystem::path &source_file, GLenum shader_type,
+                  bool verbose) {
+
+  if (verbose)
+    std::cout << "started compilation of: " << source_file.string()
+              << std::endl;
 
   Compiler::CompileOutput output{false, 0u, ""};
 
   // preprocess source
-  Preprocessor::Output pp = _preprocessor.process_source(source_file);
+  Preprocessor::Output pp = _preprocessor.process_source(source_file, verbose);
   if (!pp.success) {
     output.error = pp.error;
     return output;
   }
+
+  if (verbose)
+    std::cout << "Preprocessed source: \n" << pp.processed_source << std::endl;
 
   // Create output shader
   const std::string label = source_file.string();
