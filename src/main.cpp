@@ -10,7 +10,6 @@
 #include "compiler/preprocessor/preprocessor.h"
 #include "compiler/compiler/compiler.h"
 
-#include "loader/loader.h"
 #include "camera/camera.h"
 
 static void error_callback(int error, const char *description);

@@ -27,10 +27,6 @@ target_include_directories(glad
   external/glad/include/glad
 )
 
-add_library (loader STATIC src/loader/loader.cpp)
-target_include_directories(loader PRIVATE src/loader)
-target_link_libraries(loader PRIVATE glad)
-
 add_library(camera STATIC src/camera/camera.cpp)
 target_include_directories(camera PRIVATE src/camera)
 
@@ -38,14 +34,13 @@ add_library(compiler STATIC
   src/compiler/compiler/compiler.cpp
   src/compiler/preprocessor/preprocessor.cpp
 )
-target_include_directories(compiler PUBLIC src/compiler src/loader)
-target_link_libraries(compiler PRIVATE loader glad)
+target_include_directories(compiler PUBLIC src/compiler)
+target_link_libraries(compiler PRIVATE glad)
 
 # Main executable 
 add_executable(main src/main.cpp)
 target_link_libraries(main 
   PRIVATE 
-  loader
   camera
   glfw 
   glad
@@ -85,7 +80,6 @@ set(PROJECT_PEDANTIC_WARNINGS
   $<$<CXX_COMPILER_ID:MSVC>:/permissive->
 )
 
-target_compile_options(loader PRIVATE ${PROJECT_PEDANTIC_WARNINGS})
 target_compile_options(camera PRIVATE ${PROJECT_PEDANTIC_WARNINGS})
 target_compile_options(compiler PRIVATE ${PROJECT_PEDANTIC_WARNINGS})
 target_compile_options(main PRIVATE ${PROJECT_PEDANTIC_WARNINGS})
